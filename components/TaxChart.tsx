@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { TaxBracketData } from '../types';
+import Chart from 'chart.js/auto';
 
 interface TaxChartProps {
   bracketData: TaxBracketData[];
@@ -12,15 +13,12 @@ interface TaxChartProps {
   };
 }
 
-// Declaration globale pour ChartJS qui est chargé via CDN
-declare const Chart: any;
-
 export const TaxChart: React.FC<TaxChartProps> = ({ bracketData, qf, parts, perSimulation }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartInstanceRef = useRef<any>(null);
+  const chartInstanceRef = useRef<Chart | null>(null);
 
   useEffect(() => {
-    if (!canvasRef.current || typeof Chart === 'undefined') return;
+    if (!canvasRef.current) return;
 
     // Destroy previous instance
     if (chartInstanceRef.current) {
